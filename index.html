@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Live API documentation</title>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script>
+function radio_proc () {
+    var primaryValue = $("[name='primary']:checked").val ();
+    var targetValue = $("[name='target']:checked").val ();
+    var $submit = $(":submit");
+    if (targetValue > primaryValue) {
+        $submit.attr ("value", "Get Comparison");
+        $submit.removeAttr ("disabled");
+    } else {
+        $submit.attr ("value", "Check for Comparison");
+        $submit.attr ("disabled", true);
+    }
+}
+$(document).ready (
+    function () {
+        $(":radio").on ("change", radio_proc);
+        $("form").submit (function () {
+            document.location =
+                $("[name='primary']:checked").val () + "-"
+                + $("[name='target']:checked").val () + ".xml";
+            return false;
+        });
+    }
+)
+        </script>
+        <style>
+body {
+    padding: 3%;
+    text-align: center;
+    font-family: 'Trebuchet MS', Helvetica, sans-serif;
+}
+h1 {font-family: Arial, Helvetica, sans-serif; color: #333;}
+form a {font-size: larger;}
+a:hover {text-decoration: none;}
+.hidden {visibility: hidden;}
+</style>
+    </head>
+    <body>
+        <h1>Ableton Live API Documentation</h1>
+        <form>
+            <p><a href="8.2.7.xml">Version <strong>8.2.7</strong></a> <input type="radio" name="primary" value="8.2.7"> <input type="radio" name="target" value="8.2.7" class="hidden"></p>
+            <p><a href="9.0.6.xml">Version <strong>9.0.6</strong></a> <input type="radio" name="primary" value="9.0.6"> <input type="radio" name="target" value="9.0.6"></p>
+            <p><a href="9.1.0.xml">Version <strong>9.1.0</strong></a> <input type="radio" name="primary" value="9.1.0"> <input type="radio" name="target" value="9.1.0"></p>
+            <p><a href="9.1.3.xml">Version <strong>9.1.3</strong></a> <input type="radio" name="primary" value="9.1.3"> <input type="radio" name="target" value="9.1.3"></p>
+            <p><a href="9.1.4.xml">Version <strong>9.1.4</strong></a> <input type="radio" name="primary" value="9.1.4"> <input type="radio" name="target" value="9.1.4"></p>
+            <p><a href="9.2.0.xml">Version <strong>9.2.0</strong></a> <input type="radio" name="primary" value="9.2.0"> <input type="radio" name="target" value="9.2.0"></p>
+            <p><a href="9.5.0.xml">Version <strong>9.5.0</strong></a> <input type="radio" name="primary" value="9.5.0"> <input type="radio" name="target" value="9.5.0"></p>
+            <p><a href="9.6.0.xml">Version <strong>9.6.0</strong></a> <input type="radio" name="primary" value="9.6.0"> <input type="radio" name="target" value="9.6.0"></p>
+            <p><a href="9.7.0.xml">Version <strong>9.7.0</strong></a> <input type="radio" name="primary" value="9.7.0" class="hidden"> <input type="radio" name="target" value="9.7.0"></p>
+            <p><input type="submit" value="Check for Comparison" disabled></p>
+            </form>
+        <p>Thanks to <strong>Hanz Petrov</strong> for an <a href="http://remotescripts.blogspot.ru/p/support-files.html">API_MakeDoc script</a>!</p>
+        <p>Thanks to <strong>Julien Bayle</strong> who published <a href="http://julienbayle.net/ableton-live-9-midi-remote-scripts/">documentation for many versions of Live</a>!</p>
+        <p><a href="https://vk.com/nsu.spray">Vladimir Zevakhin</a>, 2016</p>
+    </body>
+</html>
