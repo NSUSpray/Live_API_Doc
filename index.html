@@ -10,11 +10,26 @@ function radio_proc () {
     var targetValue = $("[name='target']:checked").val ();
     var $submit = $(":submit");
     if (targetValue > primaryValue) {
-        $submit.attr ("value", "Get Comparison");
         $submit.removeAttr ("disabled");
     } else {
-        $submit.attr ("value", "Check for Comparison");
         $submit.attr ("disabled", true);
+    }
+    if ($(this).attr ("name") == "primary") {
+        var $targets = $("[name='target']");
+        $targets.each (function () {
+            if ($(this).val () <= primaryValue)
+                $(this).addClass ("impossible");
+            else
+                $(this).removeClass ("impossible");
+        });
+    } else {
+        var $primaries = $("[name='primary']");
+        $primaries.each (function () {
+            if ($(this).val () >= targetValue)
+                $(this).addClass ("impossible");
+            else
+                $(this).removeClass ("impossible");
+        });
     }
 }
 $(document).ready (
@@ -30,14 +45,20 @@ $(document).ready (
 )
         </script>
         <style>
+html {background-color: #bbb;}
 body {
-    padding: 3%;
+    background-color: #fff;
+    margin: 2% 20%;
+    padding: 2%;
     text-align: center;
     font-family: 'Trebuchet MS', Helvetica, sans-serif;
+    border-radius: 1ex;
 }
 h1 {font-family: Arial, Helvetica, sans-serif; color: #333;}
+form {margin: 5%;}
 form a {font-size: larger;}
 a:hover {text-decoration: none;}
+.impossible {opacity: 0.33; filter: alpha(opacity=33);}
 .hidden {visibility: hidden;}
 </style>
     </head>
@@ -53,7 +74,7 @@ a:hover {text-decoration: none;}
             <p><a href="9.5.0.xml">Version <strong>9.5.0</strong></a> <input type="radio" name="primary" value="9.5.0"> <input type="radio" name="target" value="9.5.0"></p>
             <p><a href="9.6.0.xml">Version <strong>9.6.0</strong></a> <input type="radio" name="primary" value="9.6.0"> <input type="radio" name="target" value="9.6.0"></p>
             <p><a href="9.7.0.xml">Version <strong>9.7.0</strong></a> <input type="radio" name="primary" value="9.7.0" class="hidden"> <input type="radio" name="target" value="9.7.0"></p>
-            <p><input type="submit" value="Check for Comparison" disabled></p>
+            <p><input type="submit" value="Compare" disabled></p>
             </form>
         <p>Thanks to <strong>Hanz Petrov</strong> for an <a href="http://remotescripts.blogspot.ru/p/support-files.html">API_MakeDoc script</a>!</p>
         <p>Thanks to <strong>Julien Bayle</strong> who published <a href="http://julienbayle.net/ableton-live-9-midi-remote-scripts/">documentation for many versions of Live</a>!</p>
