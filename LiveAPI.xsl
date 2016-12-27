@@ -132,9 +132,10 @@ ul {
 	overflow-y: auto;
 	padding: 1.5ex 0;
 }
-#nav:hover .added &gt; a {background-color: #252;}
-#nav:hover .deleted &gt; a {background-color: #522;}
-#nav:hover .added.common &gt; a, #nav:hover .deleted.common &gt; a {background-color: #441;}
+#nav:hover .added {background-color: #252;}
+#nav:hover .deleted {background-color: #522;}
+#nav:hover .common {background-color: &navBgColor;;}
+#nav:hover .added.common, #nav:hover .deleted.common {background-color: #441;}
 #nav a {
 	text-decoration: none;
 	display: block; /* чтобы растянуть на всю ширину */
