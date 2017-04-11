@@ -18,11 +18,26 @@ function radio_proc () {
     var targetValue = $("[name='target']:checked").val ();
     var $submit = $(":submit");
     if (targetValue > primaryValue) {
-        $submit.attr ("value", "Get Comparison");
         $submit.removeAttr ("disabled");
     } else {
-        $submit.attr ("value", "Check for Comparison");
         $submit.attr ("disabled", true);
+    }
+    if ($(this).attr ("name") == "primary") {
+        var $targets = $("[name='target']");
+        $targets.each (function () {
+            if ($(this).val () <= primaryValue)
+                $(this).addClass ("impossible");
+            else
+                $(this).removeClass ("impossible");
+        });
+    } else {
+        var $primaries = $("[name='primary']");
+        $primaries.each (function () {
+            if ($(this).val () >= targetValue)
+                $(this).addClass ("impossible");
+            else
+                $(this).removeClass ("impossible");
+        });
     }
 }
 $(document).ready (
@@ -38,39 +53,61 @@ $(document).ready (
 )
         </script>
         <style>
+html {color: #333; background-color: #09060d;}
 body {
-    padding: 3%;
+    background-color: #7F8583;
+    margin: 2% 20%;
+    padding: 1ex;
     text-align: center;
     font-family: 'Trebuchet MS', Helvetica, sans-serif;
+    border-radius: 0.75ex;
 }
-h1 {font-family: Arial, Helvetica, sans-serif; color: #333;}
+div {background-color: #d1d3d2; padding: 1.5ex;}
+h1 {font-family: Arial, Helvetica, sans-serif;}
+h1+form {margin-top: 0;}
+form {margin: 5%;}
+fieldset {
+    border: none;
+    max-height: 20em;
+    overflow-y: auto;
+}
+a {color: #333;}
 form a {font-size: larger;}
 a:hover {text-decoration: none;}
+.impossible {opacity: 0.33; filter: alpha(opacity=33);}
 .hidden {visibility: hidden;}
 </style>
     </head>
-    <body>
+    <body><div>
         <h1>Ableton Live API Documentation</h1>
         <form>
+            <fieldset>
 '''
 
 workdir = os.path.abspath (os.path.dirname (__file__))
-primary_filenames = [filename for filename in os.listdir (workdir) if re.compile('\d+\.\d+\.\d+\.xml').match (filename)]
+filenames = reversed (os.listdir (workdir))
+is_source_xml = lambda filename: re.compile('\d+\.\d+\.\d+\.xml').match (filename)
+primary_filenames = [filename for filename in filenames if is_source_xml (filename)]
 for i, filename in enumerate (primary_filenames):
     version = filename.replace ('.xml', '')
-    content += '            <p><a href="' + filename + '">Version <strong>' + version + '</strong></a> '
+    
+    content += '                <p><a href="' + filename + '">Version <strong>' + version + '</strong></a> '
+    
     content += '<input type="radio" name="primary" value="' + version + '"'
-    if i == len (primary_filenames) - 1: content += ' class="hidden"'
-    content += '> <input type="radio" name="target" value="' + version + '"'
-    if i == 0: content += ' class="hidden"'
+    if i == 0: content += ' class="hidden"' # пустое место размером с радиокнопку
+    content += '>'
+    
+    content += ' <input type="radio" name="target" value="' + version + '"'
+    if i == len (primary_filenames) - 1: content += ' class="hidden"' # пустое место размером с радиокнопку
     content += '></p>\n'
 
-content += '''            <p><input type="submit" value="Check for Comparison" disabled></p>
+content += '''                </fieldset>
+                <p><input type="submit" value="Compare" disabled></p>
             </form>
         <p>Thanks to <strong>Hanz Petrov</strong> for an <a href="http://remotescripts.blogspot.ru/p/support-files.html">API_MakeDoc script</a>!</p>
         <p>Thanks to <strong>Julien Bayle</strong> who published <a href="http://julienbayle.net/ableton-live-9-midi-remote-scripts/">documentation for many versions of Live</a>!</p>
         <p><a href="https://vk.com/nsu.spray">Vladimir Zevakhin</a>, 2016</p>
-    </body>
+    </div></body>
 </html>
 '''
 

@@ -16,11 +16,12 @@ target = new_doc.getroot ()
 primary.set ('version', primary.get ('version') + '-' + target.get ('version'))
 
 
-def without_listener_fix_and_device_first (elem):
+def without_listener_fix__device_and_chain_first (elem):
     text = elem.get ('name')
     if text.endswith ('()'): text = text [:-2]
     if elem.tag == 'Module':
         text = re.compile('([a-zA-Z]+)Device').sub (r'Device!\1 ', text)
+        text = re.compile('([a-zA-Z]+)Chain').sub (r'Chain!\1 ', text)
     elif elem.tag == 'Method':
         text = re.compile('add_(.*)_listener').sub (r'\1 ', text)
         text = re.compile('remove_(.*)_listener').sub (r'\1 ', text)
@@ -28,7 +29,7 @@ def without_listener_fix_and_device_first (elem):
     return text
 
 def in_order (a_elem, b_elem):
-    return without_listener_fix_and_device_first (a_elem) < without_listener_fix_and_device_first (b_elem)
+    return without_listener_fix__device_and_chain_first (a_elem) < without_listener_fix__device_and_chain_first (b_elem)
 
 def apply_compare (primary, target):
     added = deleted = common = changed = False
@@ -64,6 +65,13 @@ def apply_compare (primary, target):
             deleted_doc.set ('compare', 'deleted changed')
             if deleted_doc.get ('type') != 'Cpp-Signature':
                 changed = True
+    ###########################################################################
+    #common_tptxs = [tptx for tptx in target_tptxs if tptx in primary_tptxs]
+    #if common_tptxs:
+    #    common_docs = [doc for doc in primary_docs if [doc.get ('type'), doc.text] in common_tptxs]
+    #    for common_doc in common_docs:
+    #        common_doc.set ('compare', 'common')
+    #    common = True
     
     primary_members = [child for child in primary_children if child.tag != 'Doc']
     target_members = [child for child in target_children if child.tag != 'Doc']
