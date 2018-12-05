@@ -20,8 +20,8 @@ def without_listener_fix__device_and_chain_first (elem):
     text = elem.get ('name')
     if text.endswith ('()'): text = text [:-2]
     if elem.tag == 'Module':
-        text = re.compile('([a-zA-Z]+)Device').sub (r'Device!\1 ', text)
-        text = re.compile('([a-zA-Z]+)Chain').sub (r'Chain!\1 ', text)
+        text = re.compile('([A-Z][a-zA-Z0-9]*)Device').sub (r'Device!\1 ', text)
+        text = re.compile('([A-Z][a-zA-Z0-9]*)Chain').sub (r'Chain!\1 ', text)
     elif elem.tag == 'Method':
         text = re.compile('add_(.*)_listener').sub (r'\1 ', text)
         text = re.compile('remove_(.*)_listener').sub (r'\1 ', text)

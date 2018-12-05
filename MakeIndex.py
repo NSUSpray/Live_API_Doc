@@ -44,9 +44,12 @@ $(document).ready (
     function () {
         $(":radio").on ("change", radio_proc);
         $("form").submit (function () {
-            document.location =
-                $("[name='primary']:checked").val () + "-"
-                + $("[name='target']:checked").val () + ".xml";
+            var primaryValue = $("[name='primary']:checked").val ();
+            var targetValue = $("[name='target']:checked").val ();
+            function clearNum (version) {
+                return version.split(".").map(    function (num) {return Number(num);}    ).join (".");
+            }
+            document.location = clearNum (primaryValue) + "-" + clearNum (targetValue) + ".xml";
             return false;
         });
     }
@@ -73,6 +76,7 @@ fieldset {
 }
 a {color: #333;}
 form a {font-size: larger;}
+fieldset p {text-align: right; width: 49ex;}
 a:hover {text-decoration: none;}
 .impossible {opacity: 0.33; filter: alpha(opacity=33);}
 .hidden {visibility: hidden;}
@@ -85,19 +89,21 @@ a:hover {text-decoration: none;}
 '''
 
 workdir = os.path.abspath (os.path.dirname (__file__))
-filenames = reversed (os.listdir (workdir))
 is_source_xml = lambda filename: re.compile('\d+\.\d+\.\d+\.xml').match (filename)
-primary_filenames = [filename for filename in filenames if is_source_xml (filename)]
-for i, filename in enumerate (primary_filenames):
+primary_filenames = [filename for filename in os.listdir (workdir) if is_source_xml (filename)]
+fill_num = lambda version: '.'.join ([num.zfill (2) for num in version.split('.')])
+primary_filenames.sort(key=fill_num)
+for i, filename in enumerate (reversed (primary_filenames)):
     version = filename.replace ('.xml', '')
+    version_filled = fill_num (version)
     
     content += '                <p><a href="' + filename + '">Version <strong>' + version + '</strong></a> '
     
-    content += '<input type="radio" name="primary" value="' + version + '"'
+    content += '<input type="radio" name="primary" value="' + version_filled + '"'
     if i == 0: content += ' class="hidden"' # пустое место размером с радиокнопку
     content += '>'
     
-    content += ' <input type="radio" name="target" value="' + version + '"'
+    content += ' <input type="radio" name="target" value="' + version_filled + '"'
     if i == len (primary_filenames) - 1: content += ' class="hidden"' # пустое место размером с радиокнопку
     content += '></p>\n'
 
@@ -106,7 +112,7 @@ content += '''                </fieldset>
             </form>
         <p>Thanks to <strong>Hanz Petrov</strong> for an <a href="http://remotescripts.blogspot.ru/p/support-files.html">API_MakeDoc script</a>!</p>
         <p>Thanks to <strong>Julien Bayle</strong> who published <a href="http://julienbayle.net/ableton-live-9-midi-remote-scripts/">documentation for many versions of Live</a>!</p>
-        <p><a href="https://vk.com/nsu.spray">Vladimir Zevakhin</a>, 2016</p>
+        <p><a href="https://vk.com/nsu.spray">Vladimir Zevakhin</a>, 2016–2018</p>
     </div></body>
 </html>
 '''
