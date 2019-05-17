@@ -111,7 +111,7 @@ content += '''                </fieldset>
                 <p><input type="submit" value="Compare" disabled></p>
             </form>
         <p>Thanks to <strong>Hanz Petrov</strong> for an <a href="http://remotescripts.blogspot.ru/p/support-files.html">API_MakeDoc script</a>!</p>
-        <p>Thanks to <strong>Julien Bayle</strong> who published <a href="http://julienbayle.net/ableton-live-9-midi-remote-scripts/">documentation for many versions of Live</a>!</p>
+        <p>Thanks to <strong>Julien Bayle</strong> who published <a href="https://julienbayle.studio/ableton-live-midi-remote-scripts/#liveAPI">documentation for many versions of Live</a>!</p>
         <p><a href="https://vk.com/nsu.spray">Vladimir Zevakhin</a>, 2016–2018</p>
     </div></body>
 </html>
