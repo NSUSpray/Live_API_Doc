@@ -3,7 +3,7 @@ from glob import glob
 from subprocess import Popen
 
 for filename in glob ('API_MakeDoc_output\\Live*.xml'):
-    version = filename [7:-4]
+    version = filename [23:-4]
     if version.count ('.') == 1: version += '.0'
     Popen(('python', 'LiveApiXmlHierarchical.py', filename, version + '.xml')).wait ()
 
