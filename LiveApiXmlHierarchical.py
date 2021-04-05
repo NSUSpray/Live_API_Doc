@@ -18,7 +18,7 @@ else:
 with open (src_filename) as src_file:
     filestring = src_file.read ()
 
-# поместить Doc-элемент внутрь предыдущего элемента
+# put Doc-element inside previous element
 filestring = re.compile('(</[^<>]*>)\n\n<Doc>\t(.*?)</Doc>').sub (r'<Doc>\2</Doc>\1', filestring)
 
 src_doc = ET.fromstring (filestring)
@@ -50,7 +50,8 @@ def text_without_listener_fix__device_and_chain_first (elem):
     
 def get_children (parent, elems):
     def is_child (elem):
-        return elem.text.startswith (parent.text + '.') and len (elem.text.split ('.')) == len (parent.text.split ('.')) + 1
+        return elem.text.startswith (parent.text + '.') \
+            and len (elem.text.split ('.')) == len (parent.text.split ('.')) + 1
     elems = [elem for elem in elems if is_child (elem)]
     elems.sort (key=text_without_listener_fix__device_and_chain_first)
     return elems
@@ -63,10 +64,10 @@ def get_branches (parent, elems):
     return elems
 
 def split_text_to_elems (text):
-    text = re.compile(',([^ ])').sub (r', \1', text) # расставить пробелы после запятых
-    text = re.compile('"([^ ].*?[^ ])"').sub (r'“\1”', text) # сделать красивые кавычки
-    text = re.compile("([^a-z]|^)'([^ ].*?[^ ])'([^a-z]|$)").sub (r'\1‘\2’\3', text) # сделать красивые кавычки
-    text = re.compile("([a-z])'([a-z ])").sub (r'\1’\2', text) # сделать красивые кавычки
+    text = re.compile(',([^ ])').sub (r', \1', text) # put spaces after commas
+    text = re.compile('"([^ ].*?[^ ])"').sub (r'“\1”', text) # make pretty quotes
+    text = re.compile("([^a-z]|^)'([^ ].*?[^ ])'([^a-z]|$)").sub (r'\1‘\2’\3', text) # make pretty quotes
+    text = re.compile("([a-z])'([a-z ])").sub (r'\1’\2', text) # make pretty quotes
     text = text.replace ('&lt;', '<')
     text = text.replace ('&gt;', '>').replace ('->', '→')
     text = text.replace ('...', '…')
@@ -90,13 +91,16 @@ def split_text_to_elems (text):
             return (format, cpp_signature)
 
 def copy_elems (parent, elems, dest):
-    """ находит всех потомков родителя и для каждого из них вызывает эту же функцию """
+    """
+    finds all descendants of the parent
+    and for each of them calls the same function
+    """
     children = get_children (parent, elems)
     for child in children:
         dest_child = ET.Element (child.tag)
         dest_child.set ('name', child.text.split('.') [-1])
         doc = child.find ('Doc')
-        if doc is not None:
+        if doc is not None and doc.text is not None:
             for elem in split_text_to_elems (doc.text):
                 dest_child.append (elem)
         dest.append (dest_child)
@@ -104,7 +108,8 @@ def copy_elems (parent, elems, dest):
 
 
 live_api_elem = ET.Element ('LiveAPI')
-version = re.compile('(.*?)(\d(\.\d)*)').sub (r'\2', src_doc.find('.').text.strip ())
+version = \
+    re.compile('(.*?)(\d(\.\d)*)').sub (r'\2', src_doc.find('.').text.strip ())
 live_api_elem.set ('version', version)
 
 # добавить верхнее описание
