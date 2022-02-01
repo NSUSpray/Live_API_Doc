@@ -125,13 +125,13 @@ for i, filename in enumerate (reversed (primary_filenames)):
     version_filled = fill_num (version)
     
     content += '            <p>\n                <a href="' + \
-        filename + '">Version <strong>' + version + '</strong></a><nbsp>\n'
+        filename + '">Live <strong>' + version + '</strong></a>\n'
     
     content += \
             '                <input type="radio" name="primary" value="' + \
         version_filled + '"'
     if i == 0: content += ' class="hidden"' # empty space the size of a radio button
-    content += '><nbsp>\n'
+    content += '>\n'
     
     content += \
             '                <input type="radio" name="target" value="' + \
@@ -143,12 +143,12 @@ content += '''        </fieldset>
         <p><input type="submit" value="Compare" disabled>
     </form>
     <p>Thanks to <strong>Hanz Petrov</strong> for an
-        <a href="http://remotescripts.blogspot.ru/p/support-files.html">
+        <a href="https://github.com/NSUSpray/LiveAPI_MakeDoc">
             API_MakeDoc script</a>!
     <p>Thanks to <strong>Julien Bayle</strong> who published
-        <a href="https://julienbayle.studio/ableton-live-midi-remote-scripts/#liveAPI">
+        <a href="https://structure-void.com/ableton-live-midi-remote-scripts/#liveAPI">
             documentation for many versions of Live</a>!
-    <p><a href="https://vk.com/nsu.spray">Vladimir Zevakhin</a>, 2016–2021
+    <p><a href="https://vk.com/nsu.spray">Vladimir Zevakhin</a>, 2016–2022
 </div>
 '''
 
